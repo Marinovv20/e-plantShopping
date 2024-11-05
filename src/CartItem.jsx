@@ -9,27 +9,41 @@ const CartItem = ({ onContinueShopping }) => {
 
   // Calculate total amount for all products in the cart
   const calculateTotalAmount = () => {
- 
+ return cart.reduce((total, item) => total + (item.cost * item.quantity), 0).toFixed(2);
   };
 
   const handleContinueShopping = (e) => {
-   
+    e.preventDefault();
+    onContinueShopping();
   };
 
-
+  const handleCheckoutShopping = (e) => {
+    alert('Functionality to be added for future reference');
+  };
 
   const handleIncrement = (item) => {
+    const newQuantity = item.quantity + 1; // Increment quantity by 1
+    dispatch(updateQuantity({ name: item.name, quantity: newQuantity }));
   };
 
   const handleDecrement = (item) => {
-   
+    if (item.quantity === 1) {
+      // If quantity is 1, remove the item from the cart
+      dispatch(removeItem(item.name));
+    } else {
+      const newQuantity = item.quantity - 1; // Decrement quantity by 1
+      dispatch(updateQuantity({ name: item.name, quantity: newQuantity })); // Update quantity in the Redux store
+    }
   };
 
+  // Handle removing item from the cart
   const handleRemove = (item) => {
+    dispatch(removeItem(item.name)); // Dispatch removeItem action
   };
 
   // Calculate total cost based on quantity for an item
   const calculateTotalCost = (item) => {
+    return (item.cost * item.quantity).toFixed(2);
   };
 
   return (
